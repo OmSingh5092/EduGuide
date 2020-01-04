@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">EduGuide</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <array name="branch">
+        <item>Computer Science</item>
+        <item>Information Technology</item>
+        <item>Electronics and Communication</item>
+        <item>Electrical</item>
+    </array>
+
+    <array name="student_drawer">
+        <item>Profile</item>
+        <item>Polls</item>
+        <item>Quizzes</item>
+        <item>Courses</item>
+        <item>Studey Materials</item>
+        <item>FeedBack</item>
+    </array>
+    <array name="admin_drawer">
+        <item>Profile</item>
+        <item>Make Polls</item>
+        <item>Start Quiz</item>
+        <item>Make Course</item>
+        <item>Studey Materials</item>
+        <item>FeedBack</item>
+    </array>
+</resources>
