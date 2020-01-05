@@ -147,6 +147,7 @@ public class AdminHome extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 0: startActivity(new Intent(AdminHome.this,Profile.class));
+                    case 3: startActivity(new Intent(AdminHome.this, MakeCourse.class));
                 }
             }
         });

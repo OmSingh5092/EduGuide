@@ -51,7 +51,6 @@ public class OTPView extends DialogFragment {
 
 
                     mCallbacks.phoneVerificationState(true);
-                    mAuth.signOut();
                     getDialog().dismiss();
 
 

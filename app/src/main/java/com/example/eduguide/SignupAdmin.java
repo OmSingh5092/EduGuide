@@ -371,5 +371,9 @@ public class SignupAdmin extends AppCompatActivity implements DialogInterface.On
     @Override
     public void phoneVerificationState(Boolean state) {
         phoneverified = state;
+
+        if(state){
+            FirebaseAuth.getInstance().getCurrentUser();
+        }
     }
 }

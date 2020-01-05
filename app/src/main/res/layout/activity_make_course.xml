@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MakeCourse">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/makecourse_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/back_icon"
+            app:title="MakeCourse"
+            app:titleTextColor="#ffffff"
+            tools:layout_editor_absoluteX="8dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout12"
+            android:layout_width="152dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/makecourse_toolbar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/makecourse_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout13"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/makecourse_des"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView13"
+            style="@style/NormalTextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="16dp"
+            android:text="Resources"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout13"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout13" />
+
+        <ImageButton
+            android:id="@+id/makecourse_addresource"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/round_corners_ripple"
+            android:backgroundTint="@color/themeSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/textView13"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView13"
+            app:layout_constraintTop_toTopOf="@+id/textView13"
+            app:srcCompat="@drawable/add_icon" />
+
+        <ImageButton
+            android:id="@+id/makecourse_addtask"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/round_corners_ripple"
+            android:backgroundTint="@color/themeSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/textView14"
+            app:layout_constraintEnd_toEndOf="@+id/makecourse_addresource"
+            app:layout_constraintStart_toStartOf="@+id/makecourse_addresource"
+            app:layout_constraintTop_toTopOf="@+id/textView14"
+            app:srcCompat="@drawable/add_icon" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/makecourse_resources"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        <TextView
+            android:id="@+id/textView14"
+            style="@style/NormalTextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Tasks"
+            app:layout_constraintEnd_toEndOf="@+id/textView13"
+            app:layout_constraintStart_toStartOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/makecourse_resources" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/makecourse_tasks"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/makecourse_resources"
+            app:layout_constraintStart_toStartOf="@+id/makecourse_resources"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+        <ImageButton
+            android:id="@+id/makecourse_done"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/round_corners_ripple"
+            app:layout_constraintBottom_toBottomOf="@+id/makecourse_toolbar"
+            app:layout_constraintEnd_toEndOf="@+id/makecourse_toolbar"
+            app:layout_constraintTop_toTopOf="@+id/makecourse_toolbar"
+            app:srcCompat="@drawable/done_icon" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout14"
+            android:layout_width="151dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout12">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/makecourse_courseid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="CourseID" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/makecourse_image"
+            android:layout_width="117dp"
+            android:layout_height="118dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/makecourse_toolbar"
+            app:srcCompat="@drawable/empty_image" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/makecourse_addimage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            app:layout_constraintEnd_toStartOf="@+id/makecourse_image"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayout12"
+            app:layout_constraintTop_toBottomOf="@+id/makecourse_toolbar"
+            app:srcCompat="@drawable/add_icon" />
+
+        <ProgressBar
+            android:id="@+id/makecourse_imageload"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="38dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/makecourse_image"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayout14"
+            app:layout_constraintTop_toBottomOf="@+id/makecourse_addimage" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

@@ -427,5 +427,9 @@ public class SignupStudents extends AppCompatActivity implements DialogInterface
     @Override
     public void phoneVerificationState(Boolean state) {
         phoneverificationstate = state;
+
+        if(state){
+            FirebaseAuth.getInstance().signOut();
+        }
     }
 }

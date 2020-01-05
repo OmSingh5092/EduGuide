@@ -32,6 +32,8 @@
                 android:id="@+id/signup_admin_enroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="8"
                 android:hint="Enrollment Number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,6 +105,8 @@
                 android:id="@+id/signup_admin_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="10"
                 android:hint="Phone Number" />
         </com.google.android.material.textfield.TextInputLayout>
 

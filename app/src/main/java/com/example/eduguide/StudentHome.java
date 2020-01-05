@@ -196,6 +196,7 @@ public class StudentHome extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 0: startActivity(new Intent(StudentHome.this,Profile.class));
+                    case 3: startActivity(new Intent(StudentHome.this,Courses.class));
                 }
             }
         });
