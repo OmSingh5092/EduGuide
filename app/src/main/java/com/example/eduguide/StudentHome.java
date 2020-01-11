@@ -117,6 +117,9 @@ public class StudentHome extends AppCompatActivity {
         vp = findViewById(R.id.student_home_vp);
         vp.setAdapter(new Pageradapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(vp);
+        tabLayout.getTabAt(0).setText("Classes");
+        tabLayout.getTabAt(1).setText("Notifications");
+        tabLayout.getTabAt(2).setText("Messages");
 
         //Getting old Data
 
@@ -195,8 +198,9 @@ public class StudentHome extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
-                    case 0: startActivity(new Intent(StudentHome.this,Profile.class));
-                    case 3: startActivity(new Intent(StudentHome.this,Courses.class));
+                    case 0: startActivity(new Intent(StudentHome.this,Profile.class));break;
+                    case 5 : startActivity(new Intent(StudentHome.this,FeedbackStudent.class));break;
+                    case 3: startActivity(new Intent(StudentHome.this,Courses.class));break;
                 }
             }
         });

@@ -1,6 +1,7 @@
 package com.example.eduguide;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,9 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +29,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
@@ -87,14 +94,22 @@ public class AddCourses extends Fragment {
     }
 
 
+    public static View.OnClickListener courseAddEvent;
 
-    private class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
+
+    public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements Filterable {
+        List<Global.CourseData> data ;
+
+        public RecyclerViewAdapter(List<Global.CourseData> data) {
+            this.data = data;
+        }
+
+        List<Global.CourseData> filterdata;
 
         @NonNull
         @Override
         public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
             View v = getLayoutInflater().inflate(R.layout.courses,parent,false);
             return new RecyclerViewAdapter.ViewHolder(v);
         }
@@ -102,28 +117,69 @@ public class AddCourses extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
 
-            if(courseData.size()!=0){
-                if(courseData.get(position).image!=null){
-                    holder.image.setImageBitmap(courseData.get(position).image);
+            if(data.size()!=0){
+                if(data.get(position).image!=null){
+                    holder.image.setImageBitmap(data.get(position).image);
+                    holder.pb.setVisibility(View.GONE);
+                    holder.add.setClickable(true);
                 }
-                holder.des.setText(courseData.get(position).data.des);
-                holder.title.setText(courseData.get(position).data.title);
-                holder.admin.setText(courseData.get(position).data.admin);
+                holder.des.setText(data.get(position).data.des);
+                holder.title.setText(data.get(position).data.title);
+                holder.admin.setText(data.get(position).data.admin);
+
+                //Checking existence
+
+                if(Global.regcourses.containsKey(data.get(position).data.courseid)){
+                    holder.add.setImageResource(R.drawable.done_icon);
+                    holder.add.setClickable(false);
+                }
+                else{
+                    holder.add.setImageResource(R.drawable.add_icon);
+                    holder.add.setClickable(true);
+                }
+                courseAddEvent = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Functions.addCourse(position);
+                        Toast.makeText(getActivity(), "Course Registered", Toast.LENGTH_SHORT).show();
+
+                        holder.add.setImageResource(R.drawable.done_icon);
+                        holder.add.setClickable(false);
+                        //Removing the visibility of add icon
+
+
+                        MyCourses.adapter.notifyDataSetChanged();
+                    }
+                };
+                holder.add.setOnClickListener(courseAddEvent);
+
+
+
             }
 
 
 
         }
 
+
+
         @Override
         public int getItemCount() {
-            return courseData.size();
+            return data.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder{
+        @Override
+        public Filter getFilter() {
+            return recyclerFilter;
+        }
+
+
+        public  class ViewHolder extends RecyclerView.ViewHolder{
 
             ImageView image;
             TextView title,des,admin;
+            ImageButton add;
+            ProgressBar pb;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -131,8 +187,75 @@ public class AddCourses extends Fragment {
                 title = itemView.findViewById(R.id.course_recycler_title);
                 des  = itemView.findViewById(R.id.course_recycler_des);
                 admin = itemView.findViewById(R.id.courses_recycler_admin);
+                add = itemView.findViewById(R.id.courses_recycler_add);
+                pb = itemView.findViewById(R.id.courses_recycler_imageload);
+
+
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(getActivity(),CourseDetails.class);
+
+
+                        if(Global.regcourses!= null){
+                            if(Global.regcourses.containsKey(data.get(getAdapterPosition()).data.courseid)){
+                                i.putExtra("isadded",true);
+                            }
+                            else{
+                                i.putExtra("isadded",false);
+                            }
+                        }
+
+                        i.putExtra("courseindex",getAdapterPosition());
+                        startActivity(i);
+                    }
+                });
+
+
+
+
+
             }
         }
+
+        Filter recyclerFilter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String search = constraint.toString();
+                if(constraint.toString().isEmpty()){
+                    filterdata = Global.allcourses;
+                }else{
+                    filterdata = new ArrayList<>();
+
+                    for(Global.CourseData courseData:data){
+                        if(courseData.data.courseid.toLowerCase().contains(search)){
+                            filterdata.add(courseData);
+                        }else if(courseData.data.des.toLowerCase().contains(search)){
+                            filterdata.add(courseData);
+                        }else if(courseData.data.admin.toLowerCase().contains(search)){
+                            filterdata.add(courseData);
+                        }else if(courseData.data.title.toLowerCase().contains(search)){
+                            filterdata.add(courseData);
+                        }
+                    }
+
+
+                }
+
+                FilterResults results = new FilterResults();
+                results.values = filterdata;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                data = (List<Global.CourseData>)results.values;
+                notifyDataSetChanged();
+            }
+        };
+
+
     }
 
     RecyclerView rv;
@@ -140,7 +263,8 @@ public class AddCourses extends Fragment {
 
     int i ;
 
-    List<Global.CourseData> courseData;
+    
+    public static AddCourses.RecyclerViewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -158,42 +282,45 @@ public class AddCourses extends Fragment {
 
         //Making Adapter
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter();
+        adapter = new RecyclerViewAdapter(Global.allcourses);
         rv.setAdapter(adapter);
 
-        //Getting the course data
-        courseData = new ArrayList<>();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("courses").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for(i = 0 ;i< task.getResult().getDocuments().size(); i++){
-
-                    Global.Modal.CourseDataModal course = task.getResult().getDocuments().get(i).toObject(Global.Modal.CourseDataModal.class);
-
-                    courseData.add(new Global.CourseData(course));
-
-                    StorageReference imageRef = FirebaseStorage.getInstance().getReference();
-                    try {
-                        final int index = i;
-                        final File imageFile = File.createTempFile(course.courseid,"jpeg");
-                        imageRef.child("/courses/"+course.courseid+"/coursephoto.jpeg").getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                courseData.get(index).image = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                                adapter.notifyItemChanged(index);
-                            }
-                        });
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    adapter.notifyDataSetChanged();
-
+        //Getting the Images
+        if(!Courses.stopdownload){
+            for(int i = 0 ;i<Global.allcourses.size();i++){
+                StorageReference imageRef = FirebaseStorage.getInstance().getReference();
+                try {
+                    final int index = i;
+                    final File imageFile = File.createTempFile(Global.allcourses.get(i).data.courseid,"jpeg");
+                    imageRef.child("/courses/"+Global.allcourses.get(i).data.courseid+"/coursephoto.jpeg").getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Global.allcourses.get(index).image = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                            adapter.notifyItemChanged(index);
+                            MyCourses.adapter.notifyDataSetChanged();
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
+        }
+
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+
+                return false;
+            }
         });
-
-
 
 
 
@@ -240,4 +367,6 @@ public class AddCourses extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

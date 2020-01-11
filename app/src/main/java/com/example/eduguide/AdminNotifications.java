@@ -76,7 +76,7 @@ public class AdminNotifications extends Fragment {
         }
     }
 
-    @Override
+    /*@Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
@@ -85,7 +85,7 @@ public class AdminNotifications extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-    }
+    } */
 
     @Override
     public void onDetach() {

@@ -11,6 +11,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,16 +20,25 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class Courses extends AppCompatActivity {
@@ -65,6 +75,8 @@ public class Courses extends AppCompatActivity {
     RecyclerView rv;
     List<Global.CourseData> data;
 
+    public static  boolean stopdownload;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,18 +84,43 @@ public class Courses extends AppCompatActivity {
 
         //Toolbar
 
-        Toolbar toolbar = findViewById(R.id.makecourse_toolbar);
+        Toolbar toolbar = findViewById(R.id.course_toolbar);
         setSupportActionBar(toolbar);
+
+        //Populating Global.regcourses
+
+        if(Global.allcourses.size()!=0){
+            stopdownload = true;
+            setupViewPager();
+        }
+        else{
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection(Global.user(Global.usertype)).document(Global.enroll);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.getResult().get("courses")!=null){
+                        Global.regcourses =  (Map<String, List<Long>>)task.getResult().get("courses");
+                    }
+
+
+
+
+                    getAllCourses();
+
+                    //Setting up ViewPagers
+
+
+
+                }
+            });
+        }
+
+
 
         //Refrencing
 
-        vp = findViewById(R.id.courses_vp);
-        tab = findViewById(R.id.courses_tab);
 
-        vp.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        tab.setupWithViewPager(vp);
-        tab.getTabAt(0).setText("Your Courses");
-        tab.getTabAt(1).setText("Add Courses");
 
 
 
@@ -99,10 +136,66 @@ public class Courses extends AppCompatActivity {
 
 
     }
+    int i;
+    private void getAllCourses(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("courses").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if(Global.regcourses.size()==0){
+                    for(i = 0 ;i< task.getResult().getDocuments().size(); i++){
+
+                        Global.Modal.CourseDataModal course = task.getResult().getDocuments().get(i).toObject(Global.Modal.CourseDataModal.class);
+
+                        Global.allcourses.add(new Global.CourseData(course));
+
+
+
+
+                    }
+                }
+                else{
+                    for(i = 0 ;i< task.getResult().getDocuments().size(); i++){
+
+                        Global.Modal.CourseDataModal course = task.getResult().getDocuments().get(i).toObject(Global.Modal.CourseDataModal.class);
+
+                        Global.allcourses.add(new Global.CourseData(course));
+
+                        if(Global.regcourses.containsKey(course.courseid)){
+                            Global.regcoursedata.add(new Global.CourseData(course));
+                        }
+
+
+
+                    }
+                }
+
+
+                setupViewPager();
+            }
+        });
+    }
+
+    private void setupViewPager(){
+        vp = findViewById(R.id.courses_vp);
+        tab = findViewById(R.id.courses_tab);
+
+        vp.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        tab.setupWithViewPager(vp);
+        tab.getTabAt(0).setText("Your Courses");
+        tab.getTabAt(1).setText("Add Courses");
+    }
 
     @Override
-    public void supportNavigateUpTo(@NonNull Intent upIntent) {
-        super.supportNavigateUpTo(upIntent);
-        finish();
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
     }
 }

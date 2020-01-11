@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout9"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout15"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_class_toolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_class_topic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Topic" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout16"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout15">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_class_des"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/add_class_time_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/add_class_time"
+        app:layout_constraintEnd_toStartOf="@+id/add_class_time"
+        app:layout_constraintTop_toTopOf="@+id/add_class_time" />
+
+    <TextView
+        android:id="@+id/add_class_date_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/add_class_date"
+        app:layout_constraintEnd_toStartOf="@+id/add_class_date"
+        app:layout_constraintTop_toTopOf="@+id/add_class_date" />
+
+    <ImageButton
+        android:id="@+id/add_class_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="104dp"
+        android:backgroundTint="@color/themeSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout17"
+        app:srcCompat="@drawable/time_icon" />
+
+    <ImageButton
+        android:id="@+id/add_class_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/themeSecondary"
+        app:layout_constraintEnd_toEndOf="@+id/add_class_time"
+        app:layout_constraintStart_toStartOf="@+id/add_class_time"
+        app:layout_constraintTop_toBottomOf="@+id/add_class_time"
+        app:srcCompat="@drawable/today_icon" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/add_class_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/close_icon"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <ImageButton
+        android:id="@+id/add_class_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_corners_ripple"
+        android:backgroundTint="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/add_class_toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/add_class_toolbar"
+        app:layout_constraintTop_toTopOf="@+id/add_class_toolbar"
+        app:srcCompat="@drawable/done_icon" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout17"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout16">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_class_venue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Venue" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

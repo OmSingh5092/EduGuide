@@ -6,6 +6,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.content.Context;
@@ -30,6 +34,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,6 +51,32 @@ public class AdminHome extends AppCompatActivity {
     DrawerLayout drawerLayout;
     Button logout;
     ProgressBar pb;
+    ViewPager viewPager;
+    TabLayout tab;
+
+    class ViewPagerAdapeter extends FragmentPagerAdapter{
+
+        public ViewPagerAdapeter(@NonNull FragmentManager fm) {
+            super(fm);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+
+            switch (position){
+                case 0: return new AdminClasses();
+                case 1: return new AdminNotifications();
+                case 2 : return new AdminMessages();
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    }
 
     Integer STORAGE_WRITE_REQUEST_CODE =100, STORAGE_READ_REQUET_CODE = 100;
 
@@ -64,6 +95,8 @@ public class AdminHome extends AppCompatActivity {
         drawerList = findViewById(R.id.drawer_listview);
         logout = findViewById(R.id.student_home_logout);
         pb = findViewById(R.id.admin_home_pb);
+        viewPager = findViewById(R.id.admin_home_vp);
+        tab = findViewById(R.id.admin_home_tablayout);
 
         //Setting up List View
         ListAdapter adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, this.getResources().getStringArray(R.array.admin_drawer));
@@ -146,8 +179,8 @@ public class AdminHome extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
-                    case 0: startActivity(new Intent(AdminHome.this,Profile.class));
-                    case 3: startActivity(new Intent(AdminHome.this, MakeCourse.class));
+                    case 0: startActivity(new Intent(AdminHome.this,Profile.class)); break;
+                    case 3: startActivity(new Intent(AdminHome.this, MakeCourse.class)); break;
                 }
             }
         });
@@ -164,6 +197,15 @@ public class AdminHome extends AppCompatActivity {
                 finish();
             }
         });
+
+        //Setting up ViewPager
+        ViewPagerAdapeter adapeter = new ViewPagerAdapeter(getSupportFragmentManager());
+        viewPager.setAdapter(adapeter);
+
+        tab.setupWithViewPager(viewPager);
+        tab.getTabAt(0).setText("Classes");
+        tab.getTabAt(1).setText("Notifications");
+        tab.getTabAt(2).setText("Messages");
 
 
     }

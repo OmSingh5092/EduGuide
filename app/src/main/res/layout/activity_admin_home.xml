@@ -42,6 +42,7 @@
                 app:titleTextColor="#ffffff" />
 
             <com.google.android.material.tabs.TabLayout
+                android:id="@+id/admin_home_tablayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:tabTextColor="#ffffff">
@@ -64,6 +65,14 @@
 
 
         </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/admin_home_vp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
+            tools:layout_editor_absoluteX="8dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

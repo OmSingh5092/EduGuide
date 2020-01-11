@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CourseDetails">
+
+
+    <TextView
+        android:id="@+id/textView21"
+        style="@style/NormalTextBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Resources"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coursedetail_des" /><![CDATA[
+
+    ImageButton
+        android:id="@+id/coursedetail_addresource"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_corners_ripple"
+        android:backgroundTint="@color/themeSecondary"
+        app:srcCompat="@drawable/add_icon"
+        tools:layout_editor_absoluteX="309dp"
+        tools:layout_editor_absoluteY="231dp" />
+
+    ]]>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/coursedetail_resources"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/coursedetail_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/close_icon"
+        app:titleTextColor="#ffffff"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <TextView
+        android:id="@+id/coursedetail_des"
+        style="@style/NormalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:text="des"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coursedetail_image" />
+
+    <TextView
+        android:id="@+id/coursedetail_courseid"
+        style="@style/NormalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="courseid"
+        app:layout_constraintEnd_toStartOf="@+id/coursedetail_image"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coursedetails_admin" />
+
+    <ImageView
+        android:id="@+id/coursedetail_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coursedetail_toolbar"
+        app:srcCompat="@drawable/empty_image" />
+
+    <TextView
+        android:id="@+id/textView19"
+        style="@style/NormalTextBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Tasks"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coursedetail_resources" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/coursedetail_tasks"
+        android:layout_width="0dp"
+        android:layout_height="155dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <TextView
+        android:id="@+id/coursedetails_admin"
+        style="@style/NormalTextBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Admin"
+        app:layout_constraintEnd_toStartOf="@+id/coursedetail_image"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coursedetail_toolbar" />
+
+    <ImageButton
+        android:id="@+id/coursedetail_action"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/round_corners_ripple"
+        android:backgroundTint="@color/themeSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coursedetail_toolbar"
+        app:srcCompat="@drawable/add_icon" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

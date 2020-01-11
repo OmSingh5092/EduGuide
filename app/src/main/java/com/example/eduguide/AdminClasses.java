@@ -1,14 +1,39 @@
 package com.example.eduguide;
 
+import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 
 /**
@@ -20,6 +45,58 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class AdminClasses extends Fragment {
+
+    class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = getLayoutInflater().inflate(R.layout.class_recycler_layout,parent,false);
+            return new RecyclerViewAdapter.ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.topic.setText(Global.classes.get(position).topic);
+            holder.des.setText(Global.classes.get(position).des);
+            holder.time.setText(Global.classes.get(position).time);
+            holder.date.setText(Global.classes.get(position).date);
+            holder.venue.setText(Global.classes.get(position).venue);
+        }
+
+        @Override
+        public int getItemCount() {
+            return Global.classes.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder{
+
+            TextView topic, des, time,date,venue;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                topic = itemView.findViewById(R.id.class_recycler_topic);
+                des = itemView.findViewById(R.id.class_recycler_des);
+                time = itemView.findViewById(R.id.class_recycler_time);
+                date = itemView.findViewById(R.id.class_recycler_date);
+                venue = itemView.findViewById(R.id.class_reycler_venue);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("index",getAdapterPosition());
+
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        AddTimeClasses addTimeClasses = new AddTimeClasses();
+                        addTimeClasses.setArguments(bundle);
+                        addTimeClasses.show(ft,"Hello");
+                    }
+                });
+            }
+        }
+    }
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -60,14 +137,71 @@ public class AdminClasses extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("classes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.getResult().getDocuments()!=null){
+                    for(DocumentSnapshot snap: task.getResult().getDocuments()){
+                        Global.classes.add(snap.toObject(Global.Modal.ClassDataModal.class));
+                        Global.Modal.ClassDataModal.sortList();
+                        rv.setAdapter(adapter);
+                    }
+                }
+            }
+        });
     }
+
+    FloatingActionButton add;
+    RecyclerView rv;
+
+    public static RecyclerViewAdapter adapter ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin_classes, container, false);
+
+        View rootview = inflater.inflate(R.layout.fragment_admin_classes, container, false);
+
+        //Refrencing
+
+        rv = rootview.findViewById(R.id.admin_class_rv);
+        add = rootview.findViewById(R.id.admin_class_add);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        rv.setLayoutManager(layoutManager);
+
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddTimeClasses classes = new AddTimeClasses();
+                FragmentTransaction ft= getFragmentManager().beginTransaction();
+                classes.show(ft,"HelloWorld");
+            }
+        });
+
+        //Getting classes
+        adapter = new RecyclerViewAdapter();
+        rv.setAdapter(adapter);
+
+
+
+
+        return rootview;
+
+
     }
+
+
+
+
+
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

@@ -27,6 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="TextView"
+        style="@style/NormalTextBold"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/resources_number"
         app:layout_constraintStart_toEndOf="@+id/resources_number"
         app:layout_constraintTop_toTopOf="@+id/resources_number" />
@@ -35,12 +37,14 @@
         android:id="@+id/resources_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:text="TextView"
+        android:text="https://www.google.co.in/"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/resources_des"
-        app:layout_constraintTop_toBottomOf="@+id/resources_des" />
+        app:layout_constraintTop_toBottomOf="@+id/resources_des"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/resources_topic"
@@ -52,4 +56,16 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/resources_web"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="28dp"
+        android:background="@drawable/round_corners_ripple"
+        android:backgroundTint="@color/themeSecondary1"
+        app:layout_constraintBottom_toBottomOf="@+id/resources_link"
+        app:layout_constraintStart_toEndOf="@+id/resources_link"
+        app:layout_constraintTop_toTopOf="@+id/resources_link"
+        app:srcCompat="@drawable/openbrowser_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

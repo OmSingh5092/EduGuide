@@ -16,6 +16,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +33,17 @@ public class Global {
     static String phone;
     static Integer usertype;
     static Bitmap image;
+
+    public static Map<String,List<Long>> regcourses = new HashMap<>();
+    static List<CourseData>allcourses = new ArrayList<>();
+
+    public static List <Global.Modal.ClassDataModal> classes = new ArrayList<>();
+    public static List<Global.Modal.ClassDataModal> completedclass = new ArrayList<>();
+    public static List<Long> feedbackgiven = new ArrayList<>();
+
+    static List<CourseData>regcoursedata = new ArrayList<>();
+
+
 
     public static class Modal{
         public static class CourseDataModal {
@@ -51,6 +65,66 @@ public class Global {
                 this.resources = resources;
                 this.tasks = tasks;
             }
+
+        }
+
+        public static class ClassDataModal{
+
+
+            public ClassDataModal(){
+
+            }
+
+            static class  timeSorter implements Comparator<ClassDataModal> {
+
+                @Override
+                public int compare(ClassDataModal o1, ClassDataModal o2) {
+                    return o1.timestamp.compareTo(o2.timestamp);
+                }
+            }
+
+            public static void sortList(){
+                Collections.sort(classes,new timeSorter());
+                Collections.sort(completedclass, new timeSorter());
+            }
+
+            public String topic;
+            public String des;
+            public String time;
+            public String date;
+            public String venue;
+            public Boolean done;
+
+            public ClassDataModal(String topic, String des, String time, String date, String venue, Boolean done, Long timestamp) {
+                this.topic = topic;
+                this.des = des;
+                this.time = time;
+                this.date = date;
+                this.venue = venue;
+                this.done = done;
+                this.timestamp = timestamp;
+            }
+
+            public Long timestamp;
+
+
+        }
+
+        public static class FeedbackDataModal{
+
+            public FeedbackDataModal(){
+
+            }
+            public Long rating;
+            public String feedback;
+            public String enroll;
+
+            public FeedbackDataModal(Long rating, String feedback, String enroll) {
+                this.rating = rating;
+                this.feedback = feedback;
+                this.enroll = enroll;
+            }
+
         }
     }
     public static class CourseData{
@@ -97,6 +171,14 @@ public class Global {
         }
 
         String link;
+    }
+
+    public static String user(int i) {
+        if (i == 1) {
+            return "admins";
+        } else {
+            return "students";
+        }
     }
 
 
