@@ -15,15 +15,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.BufferedOutputStream;
 import java.util.List;
 
-public class FeedbackStudent extends AppCompatActivity {
+public class FeedbackAdmin extends AppCompatActivity {
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
@@ -44,32 +42,7 @@ public class FeedbackStudent extends AppCompatActivity {
             holder.time.setText(Global.completedclass.get(position).getTimeString());
             holder.date.setText(Global.completedclass.get(position).getDateString());
             holder.venue.setText(Global.completedclass.get(position).venue);
-            Bundle bundle = new Bundle();
-            if(Global.feedbackgiven.contains(Global.completedclass.get(position).timestamp)){
-                holder.addfeedback.setText("View Feedback");
-                bundle.putInt("task",1);
 
-            }
-            else{
-                bundle.putInt("task",2);
-            }
-
-
-
-            holder.addfeedback.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    bundle.putLong("timestamp",Global.completedclass.get(position).timestamp);
-                    AddFeedback addFeedback = new AddFeedback();
-                    addFeedback.setArguments(bundle);
-                    FragmentTransaction ft= getSupportFragmentManager().beginTransaction();
-                    addFeedback.show(ft,"Hello");
-
-
-
-                }
-            });
         }
 
         @Override
@@ -95,47 +68,52 @@ public class FeedbackStudent extends AppCompatActivity {
                 addfeedback = itemView.findViewById(R.id.class_recycler_addfeedback);
 
                 itemView.findViewById(R.id.class_recycler_reminder).setVisibility(View.GONE);
+                itemView.findViewById(R.id.class_recycler_addfeedback).setVisibility(View.GONE);
+
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putLong("timestamp",Global.completedclass.get(getAdapterPosition()).timestamp);
+                        bundle.putString("title",Global.completedclass.get(getAdapterPosition()).topic);
+                        ShowFeedback showFeedback = new ShowFeedback();
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        showFeedback.setArguments(bundle);
+                        showFeedback.show(ft,"Hello");
+                    }
+                });
             }
         }
     }
 
     RecyclerView rv;
-    public static RecyclerViewAdapter adapter;
+    RecyclerViewAdapter adapter ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feedback_student);
+        setContentView(R.layout.activity_feedback_admin);
 
         //Setting up the toolbar
-
-        Toolbar toolbar = findViewById(R.id.feedback_student_toolbar);
+        Toolbar toolbar = findViewById(R.id.feedback_admin_toolbar);
         setSupportActionBar(toolbar);
 
         //Refrencing
-
-        rv = findViewById(R.id.feedback_student_rv);
+        rv = findViewById(R.id.feedback_admin_rv);
+        rv.setLayoutManager(new LinearLayoutManager(FeedbackAdmin.this));
         adapter = new RecyclerViewAdapter();
-        rv.setLayoutManager(new LinearLayoutManager(FeedbackStudent.this));
-
-
-        //Recycler view
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(FeedbackStudent.this);
-        rv.setLayoutManager(layoutManager);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("students").document(Global.enroll).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.getResult().get("feedback") != null)
-                Global.feedbackgiven = (List<Long>) task.getResult().get("feedback");
+                    Global.feedbackgiven = (List<Long>) task.getResult().get("feedback");
 
                 rv.setAdapter(adapter);
             }
         });
-
-
 
     }
 

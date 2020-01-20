@@ -44,12 +44,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
             android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/class_recycler_time"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/class_recycler_topic" />
 
@@ -58,44 +56,40 @@
             style="@style/NormalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/class_recycler_des"
-            app:layout_constraintTop_toBottomOf="@+id/class_recycler_topic" />
+            app:layout_constraintBottom_toBottomOf="@+id/class_reycler_venue"
+            app:layout_constraintEnd_toStartOf="@+id/class_recycler_date"
+            app:layout_constraintTop_toTopOf="@+id/class_reycler_venue" />
 
         <TextView
             android:id="@+id/class_recycler_date"
             style="@style/NormalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/class_recycler_time"
-            app:layout_constraintStart_toStartOf="@+id/class_recycler_time"
-            app:layout_constraintTop_toBottomOf="@+id/class_recycler_time" />
+            app:layout_constraintBottom_toBottomOf="@+id/class_recycler_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/class_recycler_time"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/class_reycler_venue"
             style="@style/NormalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="8dp"
-            android:text="TextView"
+            android:text="NLHC 2"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/class_recycler_des"
             app:layout_constraintTop_toBottomOf="@+id/class_recycler_des" />
 
         <ImageButton
-            android:id="@+id/classs_recycler_reminder"
+            android:id="@+id/class_recycler_reminder"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
@@ -109,19 +103,17 @@
         <Button
             android:id="@+id/class_recycler_addfeedback"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="0dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/round_corners_ripple"
             android:backgroundTint="@color/themeSecondary"
-            android:padding="10dp"
             android:text="Add Feedback"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="#ffffff"
+            android:textSize="10dp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/class_recycler_topic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.533"
-            app:layout_constraintStart_toEndOf="@+id/class_recycler_topic"
             app:layout_constraintTop_toTopOf="@+id/class_recycler_topic" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

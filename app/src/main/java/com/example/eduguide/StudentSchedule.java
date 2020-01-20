@@ -56,8 +56,8 @@ public class StudentSchedule extends Fragment {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.topic.setText(Global.classes.get(position).topic);
             holder.des.setText(Global.classes.get(position).des);
-            holder.time.setText(Global.classes.get(position).time);
-            holder.date.setText(Global.classes.get(position).date);
+            holder.time.setText(Global.classes.get(position).getTimeString());
+            holder.date.setText(Global.classes.get(position).getDateString());
             holder.venue.setText(Global.classes.get(position).venue);
 
 
@@ -94,7 +94,7 @@ public class StudentSchedule extends Fragment {
                 time = itemView.findViewById(R.id.class_recycler_time);
                 date = itemView.findViewById(R.id.class_recycler_date);
                 venue = itemView.findViewById(R.id.class_reycler_venue);
-                reminder = itemView.findViewById(R.id.classs_recycler_reminder);
+                reminder = itemView.findViewById(R.id.class_recycler_reminder);
 
                 //Removing add Feedback button
 

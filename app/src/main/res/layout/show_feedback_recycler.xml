@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout13"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardElevation="10dp"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/show_feedback_recycler_student"
+            style="@style/NormalTextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="20185092"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/show_feedback_recycler_feedback"
+            style="@style/NormalText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/show_feedback_recycler_student"
+            app:layout_constraintTop_toBottomOf="@+id/show_feedback_recycler_student" />
+
+        <TextView
+            android:id="@+id/show_feedback_recycler_rating"
+            style="@style/NormalText"
+            android:layout_width="51dp"
+            android:layout_height="27dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/show_feedback_recycler_contacts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/show_feedback_recycler_contact"
+            app:layout_constraintStart_toEndOf="@+id/show_feedback_recycler_contact"
+            app:layout_constraintTop_toTopOf="@+id/show_feedback_recycler_contact">
+
+            <ImageButton
+                android:id="@+id/show_feedback_recycler_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_corners_ripple"
+                android:backgroundTint="@color/themeSecondary1"
+                android:padding="10dp"
+                android:tint="#ffffff"
+                app:srcCompat="@drawable/call_icon" />
+
+            <ImageButton
+                android:id="@+id/show_feedback_recycler_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_corners_ripple"
+                android:backgroundTint="@color/themeSecondary1"
+                android:padding="10dp"
+                app:srcCompat="@drawable/email_icon" />
+
+            <ImageButton
+                android:id="@+id/show_feedback_recycler_whatsapp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_corners_ripple"
+                android:backgroundTint="@color/themeSecondary1"
+                android:padding="10dp"
+                android:tint="#ffffff"
+                app:srcCompat="@drawable/ic_whatsapp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/show_feedback_recycler_contact"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/round_corners_ripple"
+            android:backgroundTint="@color/themeSecondary"
+            android:text="Contact"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/show_feedback_recycler_feedback" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

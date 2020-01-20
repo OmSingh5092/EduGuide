@@ -48,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
+        android:text="20:45"
         app:layout_constraintBottom_toBottomOf="@+id/add_class_time"
         app:layout_constraintEnd_toStartOf="@+id/add_class_time"
         app:layout_constraintTop_toTopOf="@+id/add_class_time" />
@@ -96,8 +97,8 @@
 
     <ImageButton
         android:id="@+id/add_class_done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/round_corners_ripple"
         android:backgroundTint="?attr/colorPrimary"
@@ -123,5 +124,19 @@
             android:layout_height="wrap_content"
             android:hint="Venue" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/add_class_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/themeSecondary"
+        android:text="Cancle Class"
+        style="@style/ButtonText"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

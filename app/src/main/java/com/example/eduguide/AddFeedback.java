@@ -9,13 +9,24 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.solver.GoalRow;
@@ -73,7 +84,9 @@ public class AddFeedback extends DialogFragment {
             db.collection("feedbacks").document(timeStamp.toString()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    data = documentSnapshot.toObject(Global.Modal.FeedbackDataModal.class);
+                    Map<String,Object> tempData= new HashMap<>();
+                    tempData = (Map<String, Object>) documentSnapshot.getData().get(Global.enroll);
+                    data = new Global.Modal.FeedbackDataModal((Long)tempData.get("rating"),tempData.get("feedback").toString());
                     setValues();
                 }
             });
@@ -130,14 +143,16 @@ public class AddFeedback extends DialogFragment {
 
     private void addData(){
         Toast.makeText(getActivity(), "Uploading Feedback", Toast.LENGTH_SHORT).show();
-        Global.Modal.FeedbackDataModal feedbackDataModal = new Global.Modal.FeedbackDataModal(Long.valueOf(rating),feedback.getText().toString(),Global.enroll);
+        Global.Modal.FeedbackDataModal feedbackDataModal = new Global.Modal.FeedbackDataModal(Long.valueOf(rating),feedback.getText().toString());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         if(task !=1){
             Global.feedbackgiven.add(timeStamp);
             FeedbackStudent.adapter.notifyDataSetChanged();
             db.collection("students").document(Global.enroll).update("feedback", FieldValue.arrayUnion(timeStamp));
         }
-        db.collection("feedbacks").document(timeStamp.toString()).set(feedbackDataModal).addOnSuccessListener(new OnSuccessListener<Void>() {
+        Map<String,Global.Modal.FeedbackDataModal> updates = new HashMap<>();
+        updates.put(Global.enroll,feedbackDataModal);
+        db.collection("feedbacks").document(timeStamp.toString()).set(updates, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getActivity(), "Feedback uploaded successfully.", Toast.LENGTH_SHORT).show();

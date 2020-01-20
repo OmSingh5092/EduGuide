@@ -16,11 +16,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -90,16 +94,29 @@ public class Global {
 
             public String topic;
             public String des;
-            public String time;
-            public String date;
             public String venue;
             public Boolean done;
 
-            public ClassDataModal(String topic, String des, String time, String date, String venue, Boolean done, Long timestamp) {
+            public String getTimeString() {
+                DateFormat df = new SimpleDateFormat("hh:mm aa");
+                Date date = new Date(timestamp);
+
+
+                return df.format(date);
+            }
+
+            public String getDateString() {
+
+                DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+                Date date = new Date(timestamp);
+                return df.format(date);
+
+            }
+
+            public ClassDataModal(String topic, String des, String venue, Boolean done, Long timestamp) {
                 this.topic = topic;
                 this.des = des;
-                this.time = time;
-                this.date = date;
+
                 this.venue = venue;
                 this.done = done;
                 this.timestamp = timestamp;
@@ -117,12 +134,10 @@ public class Global {
             }
             public Long rating;
             public String feedback;
-            public String enroll;
 
-            public FeedbackDataModal(Long rating, String feedback, String enroll) {
+            public FeedbackDataModal(Long rating, String feedback) {
                 this.rating = rating;
                 this.feedback = feedback;
-                this.enroll = enroll;
             }
 
         }

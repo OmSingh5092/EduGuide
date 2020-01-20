@@ -181,6 +181,7 @@ public class AdminHome extends AppCompatActivity {
                 switch (position){
                     case 0: startActivity(new Intent(AdminHome.this,Profile.class)); break;
                     case 3: startActivity(new Intent(AdminHome.this, MakeCourse.class)); break;
+                    case 5: startActivity(new Intent(AdminHome.this,FeedbackAdmin.class));
                 }
             }
         });

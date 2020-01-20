@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,12 +20,14 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -40,6 +43,7 @@ public class AddTimeClasses extends DialogFragment {
     TextInputEditText topic,des,venue;
     TextView timeview,dateview;
     ImageButton timebutton,datebutton,done;
+    Button remove;
 
     @Nullable
     @Override
@@ -66,14 +70,27 @@ public class AddTimeClasses extends DialogFragment {
         timebutton = rootview.findViewById(R.id.add_class_time);
         datebutton = rootview.findViewById(R.id.add_class_date);
         done = rootview.findViewById(R.id.add_class_done);
+        remove = rootview.findViewById(R.id.add_class_remove);
 
         if(getArguments()!=null){
             position = getArguments().getInt("index");
+        }
+        else{
+            remove.setVisibility(View.GONE);
         }
 
 
         AddMethods addMethods = new AddMethods();
         addMethods.makeViews();
+
+
+
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addMethods.removeValues();
+            }
+        });
 
 
 
@@ -84,7 +101,7 @@ public class AddTimeClasses extends DialogFragment {
 
     Integer position ;
 
-    private  class AddMethods{
+    public class AddMethods{
         String time_string, date_string;
 
         Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
@@ -97,13 +114,15 @@ public class AddTimeClasses extends DialogFragment {
 
 
 
-        private  void makeViews() {
+        public   void makeViews() {
 
 
             TimePickerDialog timePickerDialog  = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    time_string = String.valueOf(hourOfDay)+":"+String.valueOf(minute);
+                    Time time = new Time(hourOfDay,minute,0);
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
+                    time_string = sdf.format(time);
                     calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
                     calendar.set(Calendar.MINUTE,minute);
                 }
@@ -120,10 +139,13 @@ public class AddTimeClasses extends DialogFragment {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    date_string = String.valueOf(dayOfMonth)+"/"+String.valueOf(month)+"/"+String.valueOf(year);
+                    Date date = new Date(year,month,dayOfMonth);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+                    date_string = sdf.format(date);
                     calendar.set(year,month,dayOfMonth);
                 }
             },currentTime.get(Calendar.YEAR),currentTime.get(Calendar.MONTH),currentTime.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
             datePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -147,8 +169,9 @@ public class AddTimeClasses extends DialogFragment {
             if(position!=null){
                 topic.setText(Global.classes.get(position).topic);
                 des.setText(Global.classes.get(position).des);
-                timeview.setText(Global.classes.get(position).time);
-                dateview.setText(Global.classes.get(position).date);
+                venue.setText(Global.classes.get(position).venue);
+                timeview.setText(Global.classes.get(position).getTimeString());
+                dateview.setText(Global.classes.get(position).getDateString());
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(Global.classes.get(position).timestamp);
 
@@ -210,8 +233,7 @@ public class AddTimeClasses extends DialogFragment {
 
             // Generating object
 
-            Global.Modal.ClassDataModal classModal = new Global.Modal.ClassDataModal(topic.getText().toString(),
-                    des.getText().toString(),time_string,date_string, venue.getText().toString(),false ,Long.valueOf(timeStamp));
+            Global.Modal.ClassDataModal classModal = new Global.Modal.ClassDataModal(topic.getText().toString(),des.getText().toString(), venue.getText().toString(),false ,Long.valueOf(timeStamp));
 
 
             //Loacal Data
@@ -240,7 +262,7 @@ public class AddTimeClasses extends DialogFragment {
             // Generating object
 
             Global.Modal.ClassDataModal classModal = new Global.Modal.ClassDataModal(topic.getText().toString(),
-                    des.getText().toString(),time_string,date_string,venue.getText().toString(), false,Long.valueOf(timeStamp));
+                    des.getText().toString(),venue.getText().toString(), false,Long.valueOf(timeStamp));
 
 
             //Loacal Data
@@ -264,6 +286,23 @@ public class AddTimeClasses extends DialogFragment {
 
 
 
+        }
+
+        public void removeValues(){
+
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("classes").document(Global.classes.get(position).timestamp.toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(getActivity(), "Class Removed", Toast.LENGTH_SHORT).show();
+                    Global.classes.remove(Global.classes.get(position));
+                    Global.Modal.ClassDataModal.sortList();
+                    AdminClasses.adapter.notifyDataSetChanged();
+
+                    getDialog().dismiss();
+                }
+            });
         }
 
 

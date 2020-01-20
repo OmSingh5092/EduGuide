@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.internal.GmsLogger;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,7 +47,9 @@ import java.util.TimeZone;
  */
 public class AdminClasses extends Fragment {
 
-    class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+
+
+    public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
         @NonNull
         @Override
@@ -59,8 +62,8 @@ public class AdminClasses extends Fragment {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.topic.setText(Global.classes.get(position).topic);
             holder.des.setText(Global.classes.get(position).des);
-            holder.time.setText(Global.classes.get(position).time);
-            holder.date.setText(Global.classes.get(position).date);
+            holder.time.setText(Global.classes.get(position).getTimeString());
+            holder.date.setText(Global.classes.get(position).getDateString());
             holder.venue.setText(Global.classes.get(position).venue);
         }
 
@@ -80,6 +83,9 @@ public class AdminClasses extends Fragment {
                 time = itemView.findViewById(R.id.class_recycler_time);
                 date = itemView.findViewById(R.id.class_recycler_date);
                 venue = itemView.findViewById(R.id.class_reycler_venue);
+
+                itemView.findViewById(R.id.class_recycler_reminder).setVisibility(View.GONE);
+                itemView.findViewById(R.id.class_recycler_addfeedback).setVisibility(View.GONE);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -145,7 +151,14 @@ public class AdminClasses extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.getResult().getDocuments()!=null){
                     for(DocumentSnapshot snap: task.getResult().getDocuments()){
-                        Global.classes.add(snap.toObject(Global.Modal.ClassDataModal.class));
+
+                        Global.Modal.ClassDataModal tempData = snap.toObject(Global.Modal.ClassDataModal.class);
+                        if(tempData.done){
+                            Global.completedclass.add(tempData);
+                        }
+                        else{
+                            Global.classes.add(tempData);
+                        }
                         Global.Modal.ClassDataModal.sortList();
                         rv.setAdapter(adapter);
                     }
@@ -157,7 +170,7 @@ public class AdminClasses extends Fragment {
     FloatingActionButton add;
     RecyclerView rv;
 
-    public static RecyclerViewAdapter adapter ;
+    public static AdminClasses.RecyclerViewAdapter adapter  ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -185,7 +198,7 @@ public class AdminClasses extends Fragment {
         });
 
         //Getting classes
-        adapter = new RecyclerViewAdapter();
+        adapter = new AdminClasses.RecyclerViewAdapter();
         rv.setAdapter(adapter);
 
 
@@ -195,6 +208,8 @@ public class AdminClasses extends Fragment {
 
 
     }
+
+
 
 
 
